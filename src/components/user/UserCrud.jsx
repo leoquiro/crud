@@ -34,12 +34,13 @@ export default class UserCrud extends Component {
         axios[method](url, user)
             .then(resp => {
                 const list = this.getUpdatedList(resp.data)
+                this.setState({ user: initialState.user, list })
             })
     }
 
     getUpdatedList(user, add = true) {
         const list = this.state.list.filter(u => u.id !== user.id)
-        if (add) list.unshift(user)
+        if(add) list.unshift(user)
         return list
     }
 
@@ -55,15 +56,15 @@ export default class UserCrud extends Component {
                 <div className="row">
                     <div className="col-12 col-md-6">
                         <div className="form-group">
-                            <label>Name</label>
+                            <label>Nome</label>
                             <input type="text" className="form-control"
                                 name="name"
                                 value={this.state.user.name}
                                 onChange={e => this.updateField(e)}
-                                placeholder='Name...' />
-
+                                placeholder="Digite o nome..." />
                         </div>
                     </div>
+
                     <div className="col-12 col-md-6">
                         <div className="form-group">
                             <label>E-mail</label>
@@ -71,7 +72,7 @@ export default class UserCrud extends Component {
                                 name="email"
                                 value={this.state.user.email}
                                 onChange={e => this.updateField(e)}
-                                placeholder='Email...' />
+                                placeholder="Digite o e-mail..." />
                         </div>
                     </div>
                 </div>
@@ -81,11 +82,12 @@ export default class UserCrud extends Component {
                     <div className="col-12 d-flex justify-content-end">
                         <button className="btn btn-primary"
                             onClick={e => this.save(e)}>
-                            Save
+                            Salvar
                         </button>
+
                         <button className="btn btn-secondary ml-2"
                             onClick={e => this.clear(e)}>
-                            Cancel
+                            Cancelar
                         </button>
                     </div>
                 </div>
@@ -98,11 +100,10 @@ export default class UserCrud extends Component {
     }
 
     remove(user) {
-        axios.delete
-            (`${baseUrl}/${user.id}`).then(resp => {
-                const list = this.getUpdatedList(user, false)
-                this.setState({ list })
-            })
+        axios.delete(`${baseUrl}/${user.id}`).then(resp => {
+            const list = this.getUpdatedList(user, false)
+            this.setState({ list })
+        })
     }
 
     renderTable() {
@@ -111,9 +112,9 @@ export default class UserCrud extends Component {
                 <thead>
                     <tr>
                         <th>ID</th>
-                        <th>Name</th>
+                        <th>Nome</th>
                         <th>E-mail</th>
-                        <th>Actions</th>
+                        <th>Ações</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -144,6 +145,7 @@ export default class UserCrud extends Component {
             )
         })
     }
+    
     render() {
         return (
             <Main {...headerProps}>
